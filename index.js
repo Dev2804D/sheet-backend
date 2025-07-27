@@ -24,7 +24,7 @@ console.log(`📝 Excel file path: ${FILE_PATH}`);
 
 
 app.post('/submit', async (req, res) => {
-  const {Id, UPI, Mobile, Timestamp } = req.body;
+  const {Id, UPI, Mobile,Offer, Timestamp } = req.body;
 
   try {
     // 1. Read existing Excel file
@@ -36,7 +36,7 @@ app.post('/submit', async (req, res) => {
     const data = XLSX.utils.sheet_to_json(worksheet);
 
     // 3. Append new entry
-    data.push({Id, UPI, Mobile, Timestamp });
+    data.push({Id, UPI, Mobile,Offer, Timestamp });
 
     // 4. Convert JSON back to sheet
     const updatedSheet = XLSX.utils.json_to_sheet(data);
@@ -61,7 +61,6 @@ app.get('/view-excel', (req, res) => {
   const sheetName = workbook.SheetNames[0];
   const tableHTML = XLSX.utils.sheet_to_html(workbook.Sheets[sheetName]);
 
-  // Add custom styling
   const styledHTML = `
     <html>
       <head>
@@ -71,6 +70,15 @@ app.get('/view-excel', (req, res) => {
             font-family: Arial, sans-serif;
             background: #f5f5f5;
             padding: 40px;
+          }
+          .search-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
           }
           table {
             border-collapse: collapse;
@@ -100,13 +108,30 @@ app.get('/view-excel', (req, res) => {
         </style>
       </head>
       <body>
+        <input type="text" class="search-box" placeholder="Search by any value..." onkeyup="searchTable()" />
         ${tableHTML}
+        <script>
+          function searchTable() {
+            const input = document.querySelector('.search-box');
+            const filter = input.value.toLowerCase();
+            const rows = document.querySelectorAll('table tr');
+
+            rows.forEach((row, index) => {
+              if (index === 0) return; // Skip header
+              const cells = row.querySelectorAll('td');
+              const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+              row.style.display = match ? '' : 'none';
+            });
+          }
+        </script>
       </body>
     </html>
   `;
 
   res.send(styledHTML);
 });
+
+
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
