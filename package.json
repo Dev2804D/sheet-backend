@@ -1,0 +1,27 @@
+{
+  "name": "sheet-backend",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000R\u0000e\u0000s\u0000e\u0000t\u0000 \u0000R\u0000e\u0000p\u0000o\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dev2804D/sheet-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dev2804D/sheet-backend/issues"
+  },
+  "homepage": "https://github.com/Dev2804D/sheet-backend#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "googleapis": "^154.0.0"
+  }
+}
