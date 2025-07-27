@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const FILE_PATH = './data.xlsx'; // Your local Excel file
+const FILE_PATH = './upstock.xlsx'; 
 
 if (!fs.existsSync(FILE_PATH)) {
   const ws = XLSX.utils.json_to_sheet([]);
@@ -24,7 +24,7 @@ console.log(`📝 Excel file path: ${FILE_PATH}`);
 
 
 app.post('/submit', async (req, res) => {
-  const { UPI, Mobile, Timestamp } = req.body;
+  const {Id, UPI, Mobile, Timestamp } = req.body;
 
   try {
     // 1. Read existing Excel file
@@ -36,7 +36,7 @@ app.post('/submit', async (req, res) => {
     const data = XLSX.utils.sheet_to_json(worksheet);
 
     // 3. Append new entry
-    data.push({ UPI, Mobile, Timestamp });
+    data.push({Id, UPI, Mobile, Timestamp });
 
     // 4. Convert JSON back to sheet
     const updatedSheet = XLSX.utils.json_to_sheet(data);
